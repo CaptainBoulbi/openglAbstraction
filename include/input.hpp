@@ -6,6 +6,7 @@ struct KeyBoard{
 	bool a;
 	bool s;
 	bool d;
+	bool f;
 	bool space;
 	bool shift;
 	bool ctrl;
@@ -28,6 +29,7 @@ void processInput(){
 	input.a = glfwGetKey(engineWindow, GLFW_KEY_A) == GLFW_PRESS;
 	input.s = glfwGetKey(engineWindow, GLFW_KEY_S) == GLFW_PRESS;
 	input.d = glfwGetKey(engineWindow, GLFW_KEY_D) == GLFW_PRESS;
+	input.f = glfwGetKey(engineWindow, GLFW_KEY_F) == GLFW_PRESS;
 	input.space = glfwGetKey(engineWindow, GLFW_KEY_SPACE) == GLFW_PRESS;
 	input.escape = glfwGetKey(engineWindow, GLFW_KEY_ESCAPE) == GLFW_PRESS;
 	input.shift = glfwGetKey(engineWindow, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS 

@@ -12,6 +12,7 @@ void info(){
 	std::cout << nbFrame / currentTime << std::endl;
 	std::cout << "MS :\t\t";
 	std::cout << deltaTime * 1000 << std::endl;
+	std::cout << SCR_WIDTH << '/' << SCR_HEIGHT << std::endl;;
 }
 
 void showInput(){
@@ -19,6 +20,7 @@ void showInput(){
 	if (input.a) std::cout << 'a';
 	if (input.s) std::cout << 's';
 	if (input.d) std::cout << 'd';
+	if (input.f) std::cout << 'f';
 	if (input.space) std::cout << "space";
 	if (input.shift) std::cout << "shift";
 	if (input.ctrl) std::cout << "ctrl";
@@ -36,7 +38,7 @@ void showInput(){
 
 int main(){
 	engineStartUp("hamood");
-	engineResizeScreen(50, 50);
+	bool fullscreen = false;
 
 	while (!engineShouldClose()){
 		engineBeginFrame();
@@ -45,6 +47,12 @@ int main(){
 		showInput();
 
 		if (input.escape) engineClose();
+		if (input.space) engineResizeScreen(500, 500);
+		if (input.f){
+			if (fullscreen) engineQuitFullscreen();
+			else engineFullscreen();
+			fullscreen = !fullscreen;
+		}
 
 		engineEndFrame();
 	}

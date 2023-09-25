@@ -7,8 +7,8 @@
 #include <iostream>
 #include <cassert>
 
-unsigned int SCR_WIDTH = 1920;
-unsigned int SCR_HEIGHT = 1080;
+unsigned int SCR_WIDTH = 1920 / 2;
+unsigned int SCR_HEIGHT = 1080 / 2;
 
 float deltaTime = 0.0f;
 float timeLastFrame = 0.0f;
@@ -24,6 +24,8 @@ void engineEndFrame();
 void engineResizeScreen(int width, int height);
 void engineClose();
 void engineTearDown();
+void engineFullscreen();
+void engineQuitFullscreen();
 
 void engineScreenSizeCallback(GLFWwindow* engineWindow, int width, int height);
 
@@ -87,6 +89,7 @@ void engineEndFrame(){
 }
 
 void engineResizeScreen(int width, int height){
+	glfwSetWindowSize(engineWindow, width, height);
 	engineScreenSizeCallback(NULL, width, height);
 }
 
@@ -109,6 +112,14 @@ void processTime(){
 	currentTime= glfwGetTime();
 	deltaTime = currentTime - timeLastFrame;
 	nbFrame++;
+}
+
+void engineFullscreen(){
+	glfwSetWindowMonitor(engineWindow, glfwGetPrimaryMonitor(), 0, 0, 1920, 1080, GLFW_DONT_CARE);
+}
+
+void engineQuitFullscreen(){
+	glfwSetWindowMonitor(engineWindow, NULL, 0, 0, 1920 / 2, 1080 / 2, GLFW_DONT_CARE);
 }
 
 #include "shader.hpp"
