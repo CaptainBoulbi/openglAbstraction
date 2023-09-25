@@ -3,7 +3,7 @@
 #include <iostream>
 
 void info(){
-	std::cout << "\033[2J\033[7A";
+	std::cout << "\033[2J\033[0;0H";
 	std::cout << "Life Time :\t";
 	std::cout << currentTime << std::endl;
 	std::cout << "FPS :\t\t";
