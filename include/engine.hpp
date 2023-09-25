@@ -7,8 +7,6 @@
 #include <iostream>
 #include <cassert>
 
-#include "shader.hpp"
-
 unsigned int SCR_WIDTH = 1920;
 unsigned int SCR_HEIGHT = 1080;
 
@@ -23,11 +21,15 @@ void engineStartUp(const char* titre);
 bool engineShouldClose();
 void engineSwapBuffers();
 void engineResizeScreen(int width, int height);
+void engineClose();
 void engineTearDown();
 
 void engineScreenSizeCallback(GLFWwindow* engineWindow, int width, int height);
 
 void processTime();
+
+// from input.hpp
+void processInput();
 
 
 void engineStartUp(const char* titre){
@@ -67,8 +69,12 @@ bool engineShouldClose(){
 	return glfwWindowShouldClose(engineWindow);
 }
 
-void engineSwapBuffers(){
+void engineBeginFrame(){
 	processTime();
+	processInput();
+}
+
+void engineSwapBuffers(){
 	glfwSwapBuffers(engineWindow);
 	glfwPollEvents();
 }
@@ -77,6 +83,10 @@ void engineResizeScreen(int width, int height){
 	SCR_WIDTH = width;
 	SCR_HEIGHT = height;
 	glViewport(0, 0, width, height);
+}
+
+void engineClose(){
+	glfwSetWindowShouldClose(engineWindow, true);
 }
 
 void engineTearDown(){
@@ -95,5 +105,8 @@ void processTime(){
 	deltaTime = currentTime - timeLastFrame;
 	nbFrame++;
 }
+
+#include "input.hpp"
+#include "shader.hpp"
 
 #endif

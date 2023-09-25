@@ -14,15 +14,34 @@ void info(){
 	std::cout << deltaTime * 1000 << std::endl;
 }
 
+void inputfn(){
+	if (input.w) std::cout << 'w';
+	if (input.a) std::cout << 'a';
+	if (input.s) std::cout << 's';
+	if (input.d) std::cout << 'd';
+	if (input.space) std::cout << "space";
+	if (input.shift) std::cout << "shift";
+	if (input.ctrl) std::cout << "ctrl";
+	if (input.escp){
+		std::cout << "escp";
+		engineClose();
+	}
+	std::cout << std::endl;
+}
+
 int main(){
 	engineStartUp("hamood");
 	engineResizeScreen(50, 50);
 
 	while (!engineShouldClose()){
+		engineBeginFrame();
+
 		info();
+		inputfn();
+
 		engineSwapBuffers();
 	}
 
 	engineTearDown();
-	return 1;
+	return 0;
 }
