@@ -26,8 +26,8 @@ void showInput(){
 	if (input.mRightPress) std::cout << "\033[1mDPress";
 	if (input.mLeftHold) std::cout << "GHold";
 	if (input.mRightHold) std::cout << "DHold";
-	if (input.mLeftRelease) std::cout << "\033[0mGRelease";
-	if (input.mRightRelease) std::cout << "\033[0mDRelease";
+	if (input.mLeftRelease) std::cout << "\033[37mGRelease";
+	if (input.mRightRelease) std::cout << "\033[22mDRelease";
 	std::cout << "X:" << input.mXpos;
 	std::cout << "Y:" << input.mYpos;
 	if (input.escape) std::cout << "escape";
