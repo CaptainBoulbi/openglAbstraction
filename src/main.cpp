@@ -14,7 +14,7 @@ void info(){
 	std::cout << deltaTime * 1000 << std::endl;
 }
 
-void inputfn(){
+void showInput(){
 	if (input.w) std::cout << 'w';
 	if (input.a) std::cout << 'a';
 	if (input.s) std::cout << 's';
@@ -22,10 +22,15 @@ void inputfn(){
 	if (input.space) std::cout << "space";
 	if (input.shift) std::cout << "shift";
 	if (input.ctrl) std::cout << "ctrl";
-	if (input.escp){
-		std::cout << "escp";
-		engineClose();
-	}
+	if (input.mLeftPress) std::cout << "\033[34mGPress";
+	if (input.mRightPress) std::cout << "\033[1mDPress";
+	if (input.mLeftHold) std::cout << "GHold";
+	if (input.mRightHold) std::cout << "DHold";
+	if (input.mLeftRelease) std::cout << "\033[0mGRelease";
+	if (input.mRightRelease) std::cout << "\033[0mDRelease";
+	std::cout << "X:" << input.mXpos;
+	std::cout << "Y:" << input.mYpos;
+	if (input.escape) std::cout << "escape";
 	std::cout << std::endl;
 }
 
@@ -37,9 +42,11 @@ int main(){
 		engineBeginFrame();
 
 		info();
-		inputfn();
+		showInput();
 
-		engineSwapBuffers();
+		if (input.escape) engineClose();
+
+		engineEndFrame();
 	}
 
 	engineTearDown();

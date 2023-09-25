@@ -19,7 +19,8 @@ GLFWwindow* engineWindow;
 
 void engineStartUp(const char* titre);
 bool engineShouldClose();
-void engineSwapBuffers();
+void engineBeginFrame();
+void engineEndFrame();
 void engineResizeScreen(int width, int height);
 void engineClose();
 void engineTearDown();
@@ -28,9 +29,7 @@ void engineScreenSizeCallback(GLFWwindow* engineWindow, int width, int height);
 
 void processTime();
 
-// from input.hpp
-void processInput();
-
+#include "input.hpp"
 
 void engineStartUp(const char* titre){
 	glfwInit();
@@ -51,6 +50,8 @@ void engineStartUp(const char* titre){
 	glfwMakeContextCurrent(engineWindow);
 
 	glfwSetFramebufferSizeCallback(engineWindow, engineScreenSizeCallback);
+	glfwSetCursorPosCallback(engineWindow, mousePosCallback);
+	glfwSetMouseButtonCallback(engineWindow, mouseButtonCallback);
 
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)){
 		std::cout << "Failed to initialize GLAD" << std::endl;
@@ -62,6 +63,7 @@ void engineStartUp(const char* titre){
 	glEnable(GL_DEPTH_TEST);
 
 	glfwSetInputMode(engineWindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED);  
+	//glfwSetInputMode(engineWindow, GLFW_STICKY_MOUSE_BUTTONS, GLFW_TRUE);
 }
 
 
@@ -74,15 +76,16 @@ void engineBeginFrame(){
 	processInput();
 }
 
-void engineSwapBuffers(){
+void engineEndFrame(){
+	input.mLeftRelease = false;
+	input.mRightRelease = false;
+
 	glfwSwapBuffers(engineWindow);
 	glfwPollEvents();
 }
 
 void engineResizeScreen(int width, int height){
-	SCR_WIDTH = width;
-	SCR_HEIGHT = height;
-	glViewport(0, 0, width, height);
+	engineScreenSizeCallback(NULL, width, height);
 }
 
 void engineClose(){
@@ -106,7 +109,6 @@ void processTime(){
 	nbFrame++;
 }
 
-#include "input.hpp"
 #include "shader.hpp"
 
 #endif
