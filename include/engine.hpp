@@ -66,6 +66,8 @@ void engineStartUp(const char* titre){
 
 	glfwSetInputMode(engineWindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED);  
 	//glfwSetInputMode(engineWindow, GLFW_STICKY_MOUSE_BUTTONS, GLFW_TRUE);
+	
+	setupInputRef();
 }
 
 
@@ -81,8 +83,8 @@ void engineBeginFrame(){
 }
 
 void engineEndFrame(){
-	input.mLeftRelease = false;
-	input.mRightRelease = false;
+	//input.release[LEFT_MOUSE] = false;
+	//input.release[LEFT_MOUSE] = false;
 
 	glfwSwapBuffers(engineWindow);
 	glfwPollEvents();
