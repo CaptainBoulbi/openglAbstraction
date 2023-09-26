@@ -2,9 +2,9 @@
 #define INPUT_HPP
 
 enum Key{
+	MOUSE_LEFT,MOUSE_RIGHT,		// important : laisser les boutton de la souris au debut
 	W,A,S,D,F,
 	SPACE,LEFT_SHIFT,LEFT_CTRL,ESCAPE,
-	MOUSE_LEFT,MOUSE_RIGHT,		// important : laisser les boutton de la souris a la fin (avant LAST_KEY)
 	LAST_KEY
 };
 
@@ -40,7 +40,7 @@ bool GLFWMouseLeftPress = false;
 bool GLFWMouseRightPress = false;
 
 void processInput(){
-	for (int i=0; i<LAST_KEY-2; i++){
+	for (int i=2; i<LAST_KEY; i++){
 		processKey((Key)i, glfwGetKey(engineWindow, inputRef[i]) == GLFW_PRESS);
 	}
 
