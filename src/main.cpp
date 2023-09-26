@@ -30,6 +30,7 @@ void showInput(){
 	if (input.hold[MOUSE_RIGHT]) std::cout << "DHold";
 	if (input.release[MOUSE_LEFT]) std::cout << "\033[37mGRelease";
 	if (input.release[MOUSE_RIGHT]) std::cout << "\033[22mDRelease";
+	std::cout << std::endl;
 	std::cout << "X:" << input.mXpos;
 	std::cout << "Y:" << input.mYpos;
 	if (input.hold[ESCAPE]) std::cout << "escape";
@@ -46,7 +47,7 @@ int main(){
 		info();
 		showInput();
 
-		if (input.press[ESCAPE]) engineClose();
+		if (input.release[ESCAPE]) engineClose();
 		if (input.press[SPACE]) engineResizeScreen(500, 500);
 		if (input.press[F]){
 			if (fullscreen) engineQuitFullscreen();
