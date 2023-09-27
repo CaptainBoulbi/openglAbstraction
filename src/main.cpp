@@ -34,6 +34,7 @@ void showInput(){
 	std::cout << "X:" << input.mXpos;
 	std::cout << "Y:" << input.mYpos;
 	if (input.hold[ESCAPE]) std::cout << "escape";
+	if (input.release[ESCAPE]) std::cout << "escape released";
 	std::cout << std::endl;
 }
 
