@@ -54,8 +54,14 @@ void mousePosCallback(GLFWwindow* engineWindow, double xpos, double ypos){
 }
 
 void mouseButtonCallback(GLFWwindow* engineWindow, int button, int action, int mods){
-	if (button == GLFW_MOUSE_BUTTON_LEFT) GLFWMouseLeftPress = action == GLFW_PRESS;
-	else if (button == GLFW_MOUSE_BUTTON_RIGHT) GLFWMouseRightPress = action == GLFW_PRESS;
+	switch (button){
+		case GLFW_MOUSE_BUTTON_LEFT:
+			GLFWMouseLeftPress = action == GLFW_PRESS;
+			break;
+		case GLFW_MOUSE_BUTTON_RIGHT:
+			GLFWMouseRightPress = action == GLFW_PRESS;
+			break;
+	}
 }
 
 #endif
