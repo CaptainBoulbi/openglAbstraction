@@ -50,6 +50,7 @@ void engineStartUp(const char* titre){
 		assert("Failed to create GLFW engineWindow");
 	}
 	glfwMakeContextCurrent(engineWindow);
+	glfwSwapInterval(0);
 
 	glfwSetFramebufferSizeCallback(engineWindow, engineScreenSizeCallback);
 	glfwSetCursorPosCallback(engineWindow, mousePosCallback);
