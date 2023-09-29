@@ -1,4 +1,4 @@
-PROJECTNAME=openglAbstraction
+PROJECTNAME=simpleGraphics
 BIN=build/$(PROJECTNAME)
 CC=g++
 
