@@ -12,8 +12,9 @@ int main(){
 
   while (w.isOpen()){
     std::string titre = std::to_string((int) (w.nbFrame / w.currentTime));
-
     w.setTitle(titre.c_str());
+
+    if (w.currentTime > 5.0f) w.close();
 
     w.display();
   }
