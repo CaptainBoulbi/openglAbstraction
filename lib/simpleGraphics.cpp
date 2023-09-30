@@ -37,6 +37,8 @@ void sg::glError(){
   }
 }
 
+// INPUT
+
 // WINDOW
 
 sg::Window::Window(unsigned int width, unsigned int height, const char* title){

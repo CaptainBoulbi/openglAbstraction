@@ -7,8 +7,12 @@
 #include <iostream>
 #include <cassert>
 
-//#include "shader.hpp"
-//#include "input.hpp"
+// TODO
+// fix sg::setVsync()
+// Window::setIcon();
+// Window::screenSizeCallback()
+// vec2 fn
+// input.hpp
 
 namespace sg{
 
@@ -21,6 +25,8 @@ namespace sg{
   void setVsync(bool etat);
   // console log all opengl error
   void glError();
+
+  // INPUT
 
   // WINDOW
 
@@ -73,8 +79,6 @@ namespace sg{
     //void screenSizeCallback(GLFWwindow* window, int width, int height);
     void processTime();
   };
-
-  // INPUT
 
 
   
