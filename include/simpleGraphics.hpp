@@ -9,10 +9,8 @@
 
 // TODO
 // fix sg::setVsync()
-// Window::setIcon();
-// Window::screenSizeCallback()
-// vec2 fn
 // input.hpp
+// vec2 fn
 
 namespace sg{
 
@@ -26,16 +24,14 @@ namespace sg{
   // console log all opengl error
   void glError();
 
+  void screenSizeCallback(GLFWwindow* window, int width, int height);
+
   // INPUT
 
   // WINDOW
 
   struct Window{
     GLFWwindow* gwind; 
-    unsigned int width;
-    unsigned int height;
-    unsigned int x;
-    unsigned int y;
     bool isFullscreen;
 
     float deltaTime = 0.0f;
@@ -55,13 +51,12 @@ namespace sg{
     bool isOpen();
     // change the position of the window in the screen
     void setPos(unsigned int x, unsigned int y);
-    void getPos(unsigned int* x, unsigned int* y);
+    void getPos(int* x, int* y);
     //void setPos(vec2 pos);
     void setSize(unsigned int width, unsigned int height);
-    void getSize(unsigned int* width, unsigned int* height);
+    void getSize(int* width, int* height);
     //void setSize(vec2 size);
     void setTitle(const char* title);
-    //void setIcon(unsigned int width, unsigned int height, const Uint8 *pixels)
     // show / hide the window
     void setVisible(bool etat);
     // lock the cursor in the window area and make it invisible
@@ -76,59 +71,8 @@ namespace sg{
     void setFullscreen(bool etat);
 
     private:
-    //void screenSizeCallback(GLFWwindow* window, int width, int height);
     void processTime();
   };
-
-
-  
-
-
-  //  }
-  //  glfwMakeContextCurrent(engineWindow);
-  //  glfwSwapInterval(0);
-
-
-  //  glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-
-  //  glEnable(GL_DEPTH_TEST);
-
-  //  glfwSetInputMode(engineWindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED);  
-  //  //glfwSetInputMode(engineWindow, GLFW_STICKY_MOUSE_BUTTONS, GLFW_TRUE);
-
-  //  setupInputRef();
-  //}
-
-
-  //bool engineShouldClose(){
-  //  return glfwWindowShouldClose(engineWindow);
-  //}
-
-  //void engineBeginFrame(){
-  //  glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-  //  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-  //  processTime();
-  //  processInput();
-  //}
-
-  //void engineEndFrame(){
-  //  //input.release[LEFT_MOUSE] = false;
-  //  //input.release[LEFT_MOUSE] = false;
-
-  //  glfwSwapBuffers(engineWindow);
-  //  glfwPollEvents();
-  //}
-
-  //void engineResizeScreen(int width, int height){
-  //  glfwSetWindowSize(engineWindow, width, height);
-  //  engineScreenSizeCallback(NULL, width, height);
-  //}
-
-  //void engineScreenSizeCallback(GLFWwindow* window, int width, int height){
-  //  SCR_WIDTH = width;
-  //  SCR_HEIGHT = height;
-  //  glViewport(0, 0, width, height);
-  //}
 
 }
 

@@ -37,14 +37,15 @@ void sg::glError(){
   }
 }
 
+void sg::screenSizeCallback(GLFWwindow* window, int width, int height){
+  glViewport(0, 0, width, height);
+}
+
 // INPUT
 
 // WINDOW
 
 sg::Window::Window(unsigned int width, unsigned int height, const char* title){
-  this->width = width;
-  this->height = height;
-
   gwind = glfwCreateWindow(width, height, title, NULL, NULL);
 
   if (gwind == NULL){
@@ -53,7 +54,7 @@ sg::Window::Window(unsigned int width, unsigned int height, const char* title){
     assert("failed to create glfw window");
   }
 
-  //glfwSetFramebufferSizeCallback(gwind, screenSizeCallback);
+	glfwSetFramebufferSizeCallback(gwind, screenSizeCallback);
 }
 
 sg::Window::~Window(){
@@ -79,18 +80,22 @@ bool sg::Window::isOpen(){
 }
 
 void sg::Window::setPos(unsigned int x, unsigned int y){
-  this->x = x;
-  this->y = y;
   glfwSetWindowPos(gwind, x, y);
+}
+
+void sg::Window::getPos(int* x, int* y){
+  glfwGetWindowPos(gwind, x, y);
 }
 
 //void setPos(vec2 pos);
 
 void sg::Window::setSize(unsigned int width, unsigned int height){
-  this->width = width;
-  this->height = height;
   glfwSetWindowSize(gwind, width, height);
   glViewport(0, 0, width, height);
+}
+
+void sg::Window::getSize(int* width, int* height){
+  glfwGetWindowSize(gwind, width, height);
 }
 
 //void setSize(vec2 size);
@@ -98,8 +103,6 @@ void sg::Window::setSize(unsigned int width, unsigned int height){
 void sg::Window::setTitle(const char* title){
   glfwSetWindowTitle(gwind, title);
 }
-
-//void setIcon(unsigned int width, unsigned int height, const Uint8 *pixels)
 
 void sg::Window::setVisible(bool etat){
   if (etat) glfwShowWindow(gwind);
@@ -135,15 +138,9 @@ void sg::Window::setFullscreen(bool etat){
   if (etat){
     const GLFWvidmode* mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
     glfwSetWindowMonitor(gwind, glfwGetPrimaryMonitor(), 0, 0, mode->width, mode->height, GLFW_DONT_CARE); 
+  }else{
+    int width, height;
+    getSize(&width, &height);
+    glfwSetWindowMonitor(gwind, NULL, 0, 0, width, height, GLFW_DONT_CARE);
   }
-  else glfwSetWindowMonitor(gwind, NULL, 0, 0, width, height, GLFW_DONT_CARE);
 }
-
-
-
-//void sg::Window::screenSizeCallback(GLFWwindow* window, int wid, int hei){
-//  width  = wid;
-//  height = hei;
-//  glViewport(0, 0, wid, hei);
-//}
-
