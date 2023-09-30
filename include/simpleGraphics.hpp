@@ -9,7 +9,11 @@
 
 // TODO
 // fix sg::setVsync()
-// input.hpp
+// sprite.hpp
+// texture.hpp
+// shader.hpp
+// camera.hpp
+// sound.hpp
 // vec2 fn
 
 namespace sg{
