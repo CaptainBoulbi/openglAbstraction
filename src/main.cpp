@@ -1,3 +1,4 @@
+#include "shader.hpp"
 #include "simpleGraphics.hpp"
 
 #include <iostream>
@@ -12,6 +13,8 @@ int main(){
   sg::Texture macaque("data/macaque.jpg", true);
   sg::Sprite player(&macaque);
 
+  Shader s("shader/1.vs", "shader/1.fs");
+
   std::cout << std::endl;
 
   while (w.isOpen()){
@@ -24,6 +27,9 @@ int main(){
       w.setFullscreen(!w.isFullscreen);
 
     std::cout << "\033[1A" << w.nbFrame / w.currentTime  << std::endl;
+
+    s.use();
+    player.draw();
 
     w.display();
   }

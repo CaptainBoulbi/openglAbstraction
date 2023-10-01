@@ -8,6 +8,8 @@
 #include <iostream>
 #include <cassert>
 
+#include "shader.hpp"
+
 // TODO
 // fix sg::setVsync()
 // sprite.hpp
@@ -108,6 +110,18 @@ namespace sg{
   // SPRITE
 
   
+  inline float rectangleVertices[] = {
+    -1.0f,  1.0f, 0.0f,
+     1.0f,  1.0f, 0.0f,
+     1.0f, -1.0f, 0.0f,
+    -1.0f, -1.0f, 0.0f
+  };
+
+  inline int rectangleIndices[] = {
+    0, 1, 2,
+    0, 2, 3
+  };
+
   struct Sprite{
     float x;
     float y;
@@ -117,6 +131,7 @@ namespace sg{
     float scaleY;
     float angle;
     unsigned int textID;
+  unsigned int VBO, VAO, EBO;
 
     Sprite(Texture* text);
     ~Sprite();
@@ -127,6 +142,7 @@ namespace sg{
     void setScale(float facx, float facy);
     void scale(float facx, float facy);
     void setOrigin(float x, float y);
+    void draw();
   };
 
 
@@ -178,7 +194,6 @@ namespace sg{
     // return if the window has the focus (if the user is on the window)
     bool hasFocus();
     void setFullscreen(bool etat);
-    void draw(Sprite* sprite);
 
     private:
     void processTime();
