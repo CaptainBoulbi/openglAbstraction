@@ -3,6 +3,7 @@
 
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
+#include "stb_image.h"
 
 #include <iostream>
 #include <cassert>
@@ -10,8 +11,8 @@
 // TODO
 // fix sg::setVsync()
 // sprite.hpp
-// texture.hpp
 // shader.hpp
+// gui.hpp
 // camera.hpp
 // sound.hpp
 // vec2 fn
@@ -57,6 +58,57 @@ namespace sg{
 
     private:
     void processKey(Key k, bool glfw);
+  };
+
+
+  // IMAGE
+
+
+  struct Image{
+    unsigned char* data;
+
+    bool flipped;
+
+    int width;
+    int height;
+    int nrChannels;
+
+    Image(const char* path, bool flip = false);
+    ~Image();
+
+    bool failedLoad();
+  };
+
+
+  // TEXTURE
+
+
+  struct Texture{
+    unsigned int ID;
+
+    const char* path;
+    sg::Image* image;
+
+    bool flipped;
+
+    int width;
+    int height;
+    int nrChannels;
+
+    Texture(const char* path, bool flip = false);
+    Texture(sg::Image* img);
+    ~Texture();
+
+    void setRepeat(bool etat);
+    void refresh();
+  };
+
+
+  // SPRITE
+
+  
+  struct Sprite{
+
   };
 
 

@@ -1,5 +1,6 @@
 #include "simpleGraphics.hpp"
 #include "GLFW/glfw3.h"
+#include "stb_image.h"
 
 
 // GENERAL
@@ -76,6 +77,97 @@ void sg::Input::process(GLFWwindow* gwind){
   processKey(MOUSE_RIGHT, glfwGetMouseButton(gwind, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS);
 
   glfwGetCursorPos(gwind, &mXpos, &mYpos);
+}
+
+
+// IMAGE
+
+
+sg::Image::Image(const char* path, bool flip){
+  if (flip) stbi_set_flip_vertically_on_load(1);
+	data = stbi_load(path, &width, &height, &nrChannels, 0);
+
+  flipped = flip;
+}
+
+sg::Image::~Image(){
+	stbi_image_free(data);
+}
+
+bool sg::Image::failedLoad(){
+  return !data;
+}
+
+
+// TEXTURE
+
+
+sg::Texture::Texture(const char* path, bool flip){
+  glGenTextures(1, &ID);
+  glBindTexture(GL_TEXTURE_2D, ID);
+
+  if (flip) stbi_set_flip_vertically_on_load(1);
+	unsigned char* data = stbi_load(path, &width, &height, &nrChannels, 0);
+
+  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+  glGenerateMipmap(GL_TEXTURE_2D);
+
+	stbi_image_free(data);
+
+  this->path = path;
+  image = NULL;
+
+  flipped = flip;
+}
+
+sg::Texture::Texture(sg::Image* img){
+  glGenTextures(1, &ID);
+  glBindTexture(GL_TEXTURE_2D, ID);
+  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, img->data);
+  glGenerateMipmap(GL_TEXTURE_2D);
+
+  width = img->width;
+  height = img->height;
+  nrChannels = img->nrChannels;
+  
+  image = img;
+  path = NULL;
+
+  flipped = img->flipped;
+}
+
+sg::Texture::~Texture(){
+  delete path;
+  delete image;
+  glDeleteTextures(1, &ID);
+}
+
+void sg::Texture::setRepeat(bool etat){
+  if (etat){
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+  }else{
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+  }
+}
+
+void sg::Texture::refresh(){
+  glDeleteTextures(1, &ID);
+  if (path != NULL){
+    Texture(path, flipped);
+  }else{
+    glGenTextures(1, &ID);
+    glBindTexture(GL_TEXTURE_2D, ID);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image->data);
+    glGenerateMipmap(GL_TEXTURE_2D);
+
+    width = image->width;
+    height = image->height;
+    nrChannels = image->nrChannels;
+
+    flipped = image->flipped;
+  }
 }
 
 
