@@ -3,6 +3,7 @@
 
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
+#include "stb_image.h"
 
 #include <iostream>
 #include <cassert>
@@ -10,8 +11,8 @@
 // TODO
 // fix sg::setVsync()
 // sprite.hpp
-// texture.hpp
 // shader.hpp
+// gui.hpp
 // camera.hpp
 // sound.hpp
 // vec2 fn

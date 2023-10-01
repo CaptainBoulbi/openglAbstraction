@@ -94,13 +94,18 @@ int main(){
   // VAOs requires a call to glBindVertexArray anyways so we generally don't unbind VAOs (nor VBOs) when it's not directly necessary.
   glBindVertexArray(0); 
 
+  std::cout << std::endl;
+
   while (w.isOpen()){
 
     w.clear(0.2f, 0.3f, 0.3f);
 
-    if (w.input.release[sg::Key::ESCAPE]) w.close();
+    if (w.input.release[sg::Key::ESCAPE])
+      w.close();
+    if (w.input.press[sg::Key::F])
+      w.setFullscreen(!w.isFullscreen);
 
-    if (w.input.press[sg::Key::F]) w.setFullscreen(!w.isFullscreen);
+    std::cout << "\033[1A" << w.nbFrame / w.currentTime  << std::endl;
 
     glUseProgram(shaderProgram);
     glBindVertexArray(VAO); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
