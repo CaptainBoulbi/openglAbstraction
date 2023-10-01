@@ -18,7 +18,7 @@ int main(){
   sg::setup();
   sg::setVsync(false);
 
-  sg::Window w(1920/2, 1080/2, "main window");
+  sg::Window w(1920/2, 1080/2, "man window");
 
   // vertex shader
   unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
