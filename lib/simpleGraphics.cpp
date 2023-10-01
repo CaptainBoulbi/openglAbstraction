@@ -170,6 +170,55 @@ void sg::Texture::refresh(){
   }
 }
 
+bool sg::Texture::failedLoad(){
+  return !path;
+}
+
+
+// SPRITE
+
+
+sg::Sprite::Sprite(sg::Texture* text){
+  textID = text->ID;
+}
+
+sg::Sprite::~Sprite(){
+
+}
+
+void sg::Sprite::setPos(float x, float y){
+  this->x = x;
+  this->y = y;
+}
+
+void sg::Sprite::move(float x, float y){
+  this->x += x;
+  this->y += y;
+}
+
+void sg::Sprite::setRotation(float deg){
+  angle = deg;
+}
+
+void sg::Sprite::rotate(float deg){
+  angle += deg;
+}
+
+void sg::Sprite::setScale(float facx, float facy){
+  scaleX = facx;
+  scaleY = facy;
+}
+
+void sg::Sprite::scale(float facx, float facy){
+  scaleX += facx;
+  scaleY += facy;
+}
+
+void sg::Sprite::setOrigin(float x, float y){
+  originX = x;
+  originY = y;
+}
+
 
 // WINDOW
 
@@ -285,4 +334,8 @@ void sg::Window::setFullscreen(bool etat){
     getSize(&width, &height);
     glfwSetWindowMonitor(gwind, NULL, 0, 0, width/2, height/2, GLFW_DONT_CARE);
   }
+}
+
+void sg::Window::draw(Sprite* sprite){
+
 }

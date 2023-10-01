@@ -9,6 +9,9 @@ int main(){
 
   sg::Window w(1920/2, 1080/2, "main window");
 
+  sg::Texture macaque("data/macaque.jpg", true);
+  sg::Sprite player(&macaque);
+
   std::cout << std::endl;
 
   while (w.isOpen()){

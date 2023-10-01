@@ -101,6 +101,7 @@ namespace sg{
 
     void setRepeat(bool etat);
     void refresh();
+    bool failedLoad();
   };
 
 
@@ -108,7 +109,24 @@ namespace sg{
 
   
   struct Sprite{
+    float x;
+    float y;
+    float originX;
+    float originY;
+    float scaleX;
+    float scaleY;
+    float angle;
+    unsigned int textID;
 
+    Sprite(Texture* text);
+    ~Sprite();
+    void setPos(float x, float y);
+    void move(float x, float y);
+    void setRotation(float deg);
+    void rotate(float deg);
+    void setScale(float facx, float facy);
+    void scale(float facx, float facy);
+    void setOrigin(float x, float y);
   };
 
 
@@ -160,6 +178,7 @@ namespace sg{
     // return if the window has the focus (if the user is on the window)
     bool hasFocus();
     void setFullscreen(bool etat);
+    void draw(Sprite* sprite);
 
     private:
     void processTime();
