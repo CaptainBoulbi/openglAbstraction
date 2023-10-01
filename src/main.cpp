@@ -11,11 +11,11 @@ int main(){
 
   while (w.isOpen()){
 
+    w.clear(0.2f, 0.3f, 0.3f);
+
     if (w.input.release[sg::Key::ESCAPE]) w.close();
 
     if (w.input.press[sg::Key::F]) w.setFullscreen(!w.isFullscreen);
-
-    std::cout << "X:" << w.input.mXpos << " Y:" << w.input.mYpos << std::endl;
 
     w.display();
   }

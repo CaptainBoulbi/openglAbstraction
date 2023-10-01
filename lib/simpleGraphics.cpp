@@ -91,6 +91,8 @@ sg::Window::Window(unsigned int width, unsigned int height, const char* title){
     assert("failed to create glfw window");
   }
 
+	glfwMakeContextCurrent(gwind);
+
 	glfwSetFramebufferSizeCallback(gwind, screenSizeCallback);
 }
 
@@ -104,6 +106,16 @@ void sg::Window::destroy(){
 
 void sg::Window::close(){
   glfwSetWindowShouldClose(gwind, true);
+}
+
+void sg::Window::clear(float r, float g, float b){
+		glClearColor(r, g, b, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+}
+
+void sg::Window::setActive(bool etat){
+  if (etat) glfwMakeContextCurrent(gwind);
+  else glfwMakeContextCurrent(NULL);
 }
 
 void sg::Window::display(){
@@ -179,6 +191,6 @@ void sg::Window::setFullscreen(bool etat){
   }else{
     int width, height;
     getSize(&width, &height);
-    glfwSetWindowMonitor(gwind, NULL, 0, 0, width, height, GLFW_DONT_CARE);
+    glfwSetWindowMonitor(gwind, NULL, 0, 0, width/2, height/2, GLFW_DONT_CARE);
   }
 }

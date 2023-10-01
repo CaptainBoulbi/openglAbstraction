@@ -80,6 +80,10 @@ namespace sg{
     void destroy();
     // send a close signal to the window
     void close();
+    // clear everything drawn
+    void clear(float r, float g, float b);
+    // target the window to draw for opengl
+    void setActive(bool etat);
     // draw everithing to the window
     void display();
     // return if the window is open or if a close signal is sent
