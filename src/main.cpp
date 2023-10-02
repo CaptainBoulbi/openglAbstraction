@@ -1,4 +1,4 @@
-#include "simpleGraphics.hpp"
+#include "simpleGraphics/simpleGraphics.hpp"
 
 #include <iostream>
 
@@ -9,7 +9,7 @@ int main(){
 
   sg::Window w(1920/2, 1080/2, "man window");
 
-  sg::Shader defaultShader("shader/default.glsl");
+  sg::Shader defaultShader("shader/default.glsl", "shader/default.glsl");
 
   if (!defaultShader.success)
     std::cout << defaultShader.log << std::endl;

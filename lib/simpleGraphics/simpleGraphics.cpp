@@ -1,4 +1,4 @@
-#include "simpleGraphics.hpp"
+#include "simpleGraphics/simpleGraphics.hpp"
 
 #include "GLFW/glfw3.h"
 #include "stb_image.h"
@@ -166,12 +166,19 @@ sg::Shader::Shader(const char* vpath, const char* fpath){
   if (!frag.success)
     log += frag.log;
 
-  //std::cout << "ici" << std::endl;
   compile(vert.ID, frag.ID);
 }
 
 sg::Shader::Shader(const char* path){
-  Shader(path, path);
+  ShaderCode vert(path, VERTEX);
+  ShaderCode frag(path, FRAGMENT);
+
+  if (!vert.success)
+    log += vert.log;
+  if (!frag.success)
+    log += frag.log;
+
+  compile(vert.ID, frag.ID);
 }
 
 sg::Shader::Shader(ShaderCode vcode, ShaderCode fcode){
