@@ -21,7 +21,7 @@ SRC=$(shell find . -name "*.$(EXT)" -path "./src/*")
 OBJ=$(subst ./src/,./build/,$(SRC:.$(EXT)=.o))
 TEST=$(shell find . -name "*.$(EXT)" -path "./test/*")
 TESTO=$(subst ./test/,./build/,$(TEST:.$(EXT)=.t))
-LIB=glad stb_image_imp simpleGraphics
+LIB=glad stb_image_imp sg/sg
 LIBO=$(foreach L,$(LIB),build/$(L).l)
 
 $(shell mkdir -p build)
@@ -59,7 +59,7 @@ run : $(BIN)
 	./$< $(input)
 
 clean :
-	rm -rf build/*.o build/*.d build/*.t $(BIN) build/simpleGraphics.l
+	rm -rf build/*.o build/*.d build/*.t $(BIN) build/sg
 
 debug : $(BIN)
 	gdb $< $(input)
