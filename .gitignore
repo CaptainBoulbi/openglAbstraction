@@ -1,6 +1,6 @@
 .wakatime-project
 build/*
 lib/*
-!lib/simpleGraphics/simpleGraphics.*
+!lib/simpleGraphics
 compile_commands.json
 .cache/*
