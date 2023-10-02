@@ -2,17 +2,6 @@
 
 #include <iostream>
 
-const char* vertexShaderSource = "#version 330 core\n"
-"layout (location = 0) in vec3 aPos;\n"
-"void main(){\n"
-"   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
-"}\0";
-const char* fragmentShaderSource = "#version 330 core\n"
-"out vec4 FragColor;\n"
-"void main(){\n"
-"   FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
-"}\0";
-
 int main(){
 
   sg::setup();
@@ -20,29 +9,10 @@ int main(){
 
   sg::Window w(1920/2, 1080/2, "man window");
 
-  sg::ShaderCode defaultVert("shader/default.glsl", sg::ShaderType::VERTEX);
-  if (!defaultVert.success)
-    std::cout << defaultVert.log << std::endl;
+  sg::Shader defaultShader("shader/default.glsl");
 
-  // fragment shader
-  sg::ShaderCode defaultFrag("shader/default.glsl", sg::ShaderType::FRAGMENT);
-  if (!defaultFrag.success)
-    std::cout << defaultFrag.log << std::endl;
-
-  // link shaders
-  unsigned int shaderProgram = glCreateProgram();
-  glAttachShader(shaderProgram, defaultVert.ID);
-  glAttachShader(shaderProgram, defaultFrag.ID);
-  glLinkProgram(shaderProgram);
-
-  // check for linking errors
-  int success;
-  char infoLog[512];
-  glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
-  if (!success) {
-    glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
-    std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
-  }
+  if (!defaultShader.success)
+    std::cout << defaultShader.log << std::endl;
 
   float vertices[] = {
     0.5f,  0.5f, 0.0f,  // top right
@@ -93,7 +63,7 @@ int main(){
 
     std::cout << "\033[1A" << w.nbFrame / w.currentTime  << std::endl;
 
-    glUseProgram(shaderProgram);
+    defaultShader.use();
     glBindVertexArray(VAO); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
     //glDrawArrays(GL_TRIANGLES, 0, 6);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);

@@ -81,7 +81,7 @@ info :
 	@echo you want
 	
 check :
-	cppcheck --enable=all --suppress=missingInclude missingIncludeSystem -Iinclude src
+	cppcheck --enable=all --suppress=missingInclude missingIncludeSystem -Iinclude -Ilib/simpleGraphics src lib/simpleGraphics
 	flawfinder src
 
 # alias
