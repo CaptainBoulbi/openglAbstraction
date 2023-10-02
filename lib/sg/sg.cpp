@@ -34,6 +34,28 @@ void sg::setup(){
 
   glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
   glEnable(GL_DEPTH_TEST);
+
+  glGenVertexArrays(1, &rectangleVAO);
+  glGenBuffers(1, &rectangleVBO);
+  glGenBuffers(1, &rectangleEBO);
+
+  glBindVertexArray(rectangleVAO);
+
+  glBindBuffer(GL_ARRAY_BUFFER, rectangleVBO);
+  glBufferData(GL_ARRAY_BUFFER, sizeof(rectangleVertices), rectangleVertices, GL_STATIC_DRAW);
+
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, rectangleEBO);
+  glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(rectangleIndices), rectangleIndices, GL_STATIC_DRAW);
+
+  // position attribute
+  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
+  glEnableVertexAttribArray(0);
+  // color attribute
+  glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+  glEnableVertexAttribArray(1);
+  // texture coord attribute
+  glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+  glEnableVertexAttribArray(2);
 }
 
 void sg::setVsync(bool etat){
@@ -190,7 +212,7 @@ sg::Shader::~Shader(){
 }
 
 void sg::Shader::use(){
-    glUseProgram(ID);
+  glUseProgram(ID);
 }
 
 void sg::Shader::compile(unsigned int idv, unsigned int idf){
@@ -209,7 +231,62 @@ void sg::Shader::compile(unsigned int idv, unsigned int idf){
 }
 
 void sg::Shader::setInt(const char* name, int value){
+  use();
   glUniform1i(glGetUniformLocation(ID, name), value); 
+}
+
+
+// TEXTURE
+
+
+sg::Texture::Texture(const char* path, bool flip){
+  glGenTextures(1, &ID);
+  glBindTexture(GL_TEXTURE_2D, ID);
+
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+  if (flip) stbi_set_flip_vertically_on_load(true);
+
+  unsigned char *data = stbi_load(path, &width, &height, &nrChannels, 0);
+  if (data) {
+    success = true;
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+    glGenerateMipmap(GL_TEXTURE_2D);
+  } else {
+    success = false;
+    log = "Failed to load texture";
+  }
+  stbi_image_free(data);
+}
+
+sg::Texture::~Texture(){
+  glDeleteTextures(1, &ID);
+}
+
+
+// SPRITE
+
+
+void sg::Sprite::bind(sg::Texture text){
+  textID = text.ID;
+}
+
+void sg::Sprite::bind(sg::Shader* shad){
+  shader = shad;
+}
+
+void sg::Sprite::draw(){
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, textID);
+
+    shader->use();
+
+    glBindVertexArray(rectangleVAO);
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 }
 
 
@@ -225,9 +302,9 @@ sg::Window::Window(unsigned int width, unsigned int height, const char* title){
     assert("failed to create glfw window");
   }
 
-	glfwMakeContextCurrent(gwind);
+  glfwMakeContextCurrent(gwind);
 
-	glfwSetFramebufferSizeCallback(gwind, screenSizeCallback);
+  glfwSetFramebufferSizeCallback(gwind, screenSizeCallback);
 }
 
 sg::Window::~Window(){
@@ -243,8 +320,8 @@ void sg::Window::close(){
 }
 
 void sg::Window::clear(float r, float g, float b){
-		glClearColor(r, g, b, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  glClearColor(r, g, b, 1.0f);
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 void sg::Window::setActive(bool etat){
