@@ -70,8 +70,8 @@ dist : clean
 	cd .. && tar zcvf $(PROJECTNAME)/build/$(PROJECTNAME).tgz $(PROJECTNAME) >/dev/null
 
 push :
-	git push bbsrv HEAD:master
-	git push gh HEAD:master
+	git push bbsrv master
+	git push gh master
 
 install :
 	mv build/$(PROJECTNAME).tgz $$HOME/dev/opt/archive
