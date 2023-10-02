@@ -1,6 +1,13 @@
 #include "simpleGraphics.hpp"
+
 #include "GLFW/glfw3.h"
 #include "stb_image.h"
+
+#include <cstdlib>
+#include <cstring>
+#include <fstream>
+#include <string>
+#include <iostream>
 
 
 // GENERAL
@@ -77,6 +84,78 @@ void sg::Input::process(GLFWwindow* gwind){
   processKey(MOUSE_RIGHT, glfwGetMouseButton(gwind, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS);
 
   glfwGetCursorPos(gwind, &mXpos, &mYpos);
+}
+
+
+// SHADER
+
+
+sg::ShaderCode::ShaderCode(const char* path, ShaderType stype){
+  type = stype;
+  success = true;
+
+  std::ifstream file;
+  file.open(path);
+
+  if (!file.is_open()){
+    success = false;
+    log = "Unable to open file";
+    return;
+  }
+
+  std::string line;
+  std::string code;
+
+  bool found = false;
+  while (std::getline(file, line)){
+    if (!found && ((type == VERTEX && line == "#vertex shader") || (type == FRAGMENT && line == "#fragment shader"))){
+      found = true;
+      continue;;
+    }else if (found && ((type == FRAGMENT && line == "#vertex shader") || (type == VERTEX && line == "#fragment shader"))){
+      found = false;
+      continue;
+    }
+
+    if (found){
+      code += line + '\n';
+    }
+  }
+
+  file.close();
+
+  if (code == ""){
+    success = false;
+    log = "No shader type found";
+    return;
+  }
+
+  const char* glCode = code.c_str();
+
+  if (type == VERTEX) ID = glCreateShader(GL_VERTEX_SHADER);
+  if (type == FRAGMENT) ID = glCreateShader(GL_FRAGMENT_SHADER);
+  glShaderSource(ID, 1, &glCode, NULL);
+  glCompileShader(ID);
+
+  glGetShaderiv(ID, GL_COMPILE_STATUS, &success);
+
+  std::cout << glCode << std::endl;
+
+  if (!success){
+    if (type == VERTEX)
+      log = (char*)"ERROR::SHADER::VERTEX::COMPILATION_FAILED\n";
+    else if (type == FRAGMENT)
+      log = (char*)"ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n";
+
+    char infoLog[512];
+    glGetShaderInfoLog(ID, 512, NULL, infoLog);
+
+    log += infoLog;
+    return;
+  }
+}
+
+sg::ShaderCode::~ShaderCode(){
+  glDeleteShader(ID);
 }
 
 

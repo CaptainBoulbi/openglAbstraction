@@ -20,43 +20,29 @@ int main(){
 
   sg::Window w(1920/2, 1080/2, "man window");
 
-  // vertex shader
-  unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
-  glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
-  glCompileShader(vertexShader);
-  // check for shader compile errors
-  int success;
-  char infoLog[512];
-  glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
-  if (!success)
-  {
-    glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
-    std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
-  }
+  sg::ShaderCode defaultVert("shader/default.glsl", sg::ShaderType::VERTEX);
+  if (!defaultVert.success)
+    std::cout << defaultVert.log << std::endl;
+
   // fragment shader
-  unsigned int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-  glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
-  glCompileShader(fragmentShader);
-  // check for shader compile errors
-  glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
-  if (!success)
-  {
-    glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
-    std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
-  }
+  sg::ShaderCode defaultFrag("shader/default.glsl", sg::ShaderType::FRAGMENT);
+  if (!defaultFrag.success)
+    std::cout << defaultFrag.log << std::endl;
+
   // link shaders
   unsigned int shaderProgram = glCreateProgram();
-  glAttachShader(shaderProgram, vertexShader);
-  glAttachShader(shaderProgram, fragmentShader);
+  glAttachShader(shaderProgram, defaultVert.ID);
+  glAttachShader(shaderProgram, defaultFrag.ID);
   glLinkProgram(shaderProgram);
+
   // check for linking errors
+  int success;
+  char infoLog[512];
   glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
   if (!success) {
     glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
     std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
   }
-  glDeleteShader(vertexShader);
-  glDeleteShader(fragmentShader);
 
   float vertices[] = {
     0.5f,  0.5f, 0.0f,  // top right

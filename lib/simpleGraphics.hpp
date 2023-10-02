@@ -7,6 +7,7 @@
 
 #include <iostream>
 #include <cassert>
+#include <string>
 
 // TODO
 // fix sg::setVsync()
@@ -58,6 +59,29 @@ namespace sg{
 
     private:
     void processKey(Key k, bool glfw);
+  };
+
+
+  // SHADER
+
+
+  enum ShaderType{
+    VERTEX, FRAGMENT
+  };
+
+  struct ShaderCode{
+    unsigned int ID;
+    ShaderType type;
+
+    int success;
+    std::string log;
+
+    ShaderCode(const char* path, ShaderType stype);
+    ~ShaderCode();
+  };
+
+  struct Shader{
+    
   };
 
 
