@@ -23,7 +23,7 @@ void sg::setup(){
   glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
 
-  Window sgSetupWindow(1920/2, 1080/2, "sg setup window");
+  Window sgSetupWindow(1920/2, 1080/2, "sg setoup window");
 
   glfwMakeContextCurrent(sgSetupWindow.gwind);
 
