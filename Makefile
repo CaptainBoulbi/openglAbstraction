@@ -90,7 +90,7 @@ info :
 	@echo you want
 	
 check :
-	cppcheck --enable=all --suppress=missingInclude missingIncludeSystem -Iinclude -Ilib/simpleGraphics src lib/simpleGraphics
+	cppcheck --enable=all --suppress=missingInclude missingIncludeSystem -Iinclude -Ilib/sg src lib/sg
 	flawfinder src
 
 # alias
