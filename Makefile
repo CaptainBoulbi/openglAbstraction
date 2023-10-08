@@ -64,6 +64,15 @@ clean :
 debug : $(BIN)
 	gdb $< $(input)
 
+asm : $(OBJ:.o=.s) $(BIN).s
+
+build/%.s : src/%.$(EXT)
+	@mkdir -p $(@D)
+	$(CC) $(FLAGS) -S $< -o $@
+
+$(BIN).s : $(BIN)
+	objdump -drwC -Mintel -S $< > $<.s
+
 # unzip : tar -xvf exemple.tgz
 dist : clean
 	$(info /!\ project folder has to be named $(PROJECTNAME) /!\ )
@@ -96,4 +105,4 @@ p : push
 
 d : debug
 
-.PHONY : all test t alltest run r clean c debug d dist push p install info check
+.PHONY : all test t alltest run r clean c debug asm d dist push p install info check
