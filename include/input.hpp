@@ -1,5 +1,5 @@
-#ifndef INPUT_HPP
-#define INPUT_HPP
+#ifndef SG_INPUT_HPP
+#define SG_INPUT_HPP
 
 #include "GLFW/glfw3.h"
 
@@ -30,4 +30,4 @@ namespace sg{
 
 }
 
-#endif // !INPUT_HPP
+#endif // !SG_INPUT_HPP

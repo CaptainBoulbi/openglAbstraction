@@ -1,17 +1,16 @@
-#ifndef SIMPLE_GRAPHICS_HPP
-#define SIMPLE_GRAPHICS_HPP
+#ifndef SG_SIMPLE_GRAPHICS_HPP
+#define SG_SIMPLE_GRAPHICS_HPP
 
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
 #include "stb_image.h"
 
+#include "input.hpp"
+#include "shader.hpp"
+
 #include <iostream>
 #include <cassert>
 #include <string>
-
-#include "input.hpp"
-
-#include "shader.hpp"
 
 // TODO
 // fix sg::setVsync()
