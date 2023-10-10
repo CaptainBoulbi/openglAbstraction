@@ -15,8 +15,10 @@ endif
 DEPFLAGS=-MP -MD
 MACROS=DEBUG=1
 FLAGS=-Wall -Wextra $(foreach F,$(INCDIRS),-I$(F)) $(OPT) $(DEPFLAGS) $(foreach M,$(MACROS),-D$(M))
-LDFLAGS=lib/libglfw3.a $(FLAGS) -Llib -lX11
+LDFLAGS=$(FLAGS) -lglfw3 -lX11 -Llib
 
+APP=$(shell find . -name "*.$(EXT)" -path "./app/*")
+APO=$(subst ./app/,./build/,$(APP:.$(EXT)=.o))
 SRC=$(shell find . -name "*.$(EXT)" -path "./src/*")
 OBJ=$(subst ./src/,./build/,$(SRC:.$(EXT)=.o))
 TEST=$(shell find . -name "*.$(EXT)" -path "./test/*")
@@ -24,12 +26,14 @@ TESTO=$(subst ./test/,./build/,$(TEST:.$(EXT)=.t))
 LIB=glad stb_image_imp
 LIBO=$(foreach L,$(LIB),build/$(L).l)
 
+LIBIN=build/lib$(PROJECTNAME).a
+
 $(shell mkdir -p build)
 
 
 all : $(BIN)
 
-$(BIN) : $(OBJ) $(LIBO) #build/glad.o build/stb_image_imp.o
+$(BIN) : $(APO) $(LIBIN) #build/glad.o build/stb_image_imp.o
 	$(CC) -o $@ $^ $(LDFLAGS)
 
 -include $(OBJ:.o=.d)
@@ -42,6 +46,15 @@ build/%.l : lib/%.*
 build/%.o : src/%.$(EXT)
 	@mkdir -p $(@D)
 	$(CC) $(FLAGS) -o $@ -c $<
+
+build/%.o : app/%.$(EXT)
+	@mkdir -p $(@D)
+	$(CC) $(FLAGS) -o $@ -c $<
+
+lib : $(LIBIN)
+
+$(LIBIN) : $(OBJ) $(LIBO)
+	ar rcs $@ $^
 
 # make test file=testGenID.cpp
 test : build/$(file).t
@@ -59,7 +72,7 @@ run : $(BIN)
 	./$< $(input)
 
 clean :
-	rm -rf build/*.o build/*.d build/*.t $(BIN) build/sg
+	rm -rf build/*.o build/*.d build/*.t $(BIN) $(LIBIN)
 
 debug : $(BIN)
 	gdb $< $(input)
