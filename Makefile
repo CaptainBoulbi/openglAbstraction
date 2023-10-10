@@ -24,7 +24,7 @@ OBJ=$(subst ./src/,./build/,$(SRC:.$(EXT)=.o))
 TEST=$(shell find . -name "*.$(EXT)" -path "./test/*")
 TESTO=$(subst ./test/,./build/,$(TEST:.$(EXT)=.t))
 LIB=glad stb_image_imp
-LIBO=$(foreach L,$(LIB),build/$(L).l)
+LIBO=$(foreach L,$(LIB),build/lib/$(L).l)
 
 LIBIN=build/lib$(PROJECTNAME).a
 
@@ -39,7 +39,7 @@ $(BIN) : $(APO) $(LIBIN) #build/glad.o build/stb_image_imp.o
 -include $(OBJ:.o=.d)
 #$(LIBO:.o=.d)
 
-build/%.l : lib/%.*
+build/lib/%.l : lib/%.*
 	@mkdir -p $(@D)
 	$(CC) $(FLAGS) -o $@ -c $<
 
@@ -73,6 +73,9 @@ run : $(BIN)
 
 clean :
 	rm -rf build/*.o build/*.d build/*.t $(BIN) $(LIBIN)
+
+clean-hard :
+	rm -rf build/*
 
 debug : $(BIN)
 	gdb $< $(input)
