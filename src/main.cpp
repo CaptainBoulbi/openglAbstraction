@@ -1,4 +1,4 @@
-#include "sg/sg.hpp"
+#include "sg.hpp"
 
 #include <iostream>
 

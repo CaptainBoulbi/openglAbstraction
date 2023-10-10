@@ -1,4 +1,4 @@
-#include "sg/sg.hpp"
+#include "sg.hpp"
 
 #include "GLFW/glfw3.h"
 #include "stb_image.h"

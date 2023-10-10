@@ -1,6 +1,5 @@
 .wakatime-project
 build/*
 lib/*
-!lib/sg
 compile_commands.json
 .cache/*
