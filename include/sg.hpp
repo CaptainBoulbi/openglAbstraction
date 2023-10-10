@@ -9,6 +9,10 @@
 #include <cassert>
 #include <string>
 
+#include "input.hpp"
+
+#include "shader.hpp"
+
 // TODO
 // fix sg::setVsync()
 // sprite.hpp
@@ -47,70 +51,6 @@ namespace sg{
   };
 
   inline unsigned int rectangleVBO, rectangleVAO, rectangleEBO;
-
-
-  // INPUT
-
-
-  enum Key{
-    MOUSE_LEFT,MOUSE_RIGHT,		// important : laisser les boutton de la souris au debut
-    W,A,S,D,F,
-    SPACE,LEFT_SHIFT,LEFT_CTRL,ESCAPE,
-    LAST_KEY
-  };
-  
-  inline int inputRef[sg::LAST_KEY];
-
-  struct Input{
-    bool press[LAST_KEY];
-    bool hold[LAST_KEY];
-    bool release[LAST_KEY];
-    double mXpos;
-    double mYpos;
-    
-    Input();
-    void process(GLFWwindow* gwind);
-
-    private:
-    void processKey(Key k, bool glfw);
-  };
-
-
-  // SHADER
-
-
-  enum ShaderType{
-    VERTEX, FRAGMENT
-  };
-
-  struct ShaderCode{
-    unsigned int ID;
-    ShaderType type;
-
-    int success;
-    std::string log;
-
-    ShaderCode(const char* path, ShaderType stype);
-    ~ShaderCode();
-  };
-
-  struct Shader{
-    unsigned int ID;
-
-    int success;
-    std::string log;
-
-    Shader(const char* vpath, const char* fpath);
-    Shader(const char* path);
-    Shader(ShaderCode vcode, ShaderCode fcode);
-    ~Shader();
-    void use();
-
-    void setInt(const char* name, int value);
-
-    private:
-    void compile(unsigned int idv, unsigned int idf);
-  };
 
 
   // TEXTURE
