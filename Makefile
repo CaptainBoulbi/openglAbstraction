@@ -97,6 +97,8 @@ dist : clean
 push :
 	git push bbsrv master
 	git push gh master
+	git push bbsrv new
+	git push gh new
 
 install :
 	mv build/$(PROJECTNAME).tgz $$HOME/dev/opt/archive

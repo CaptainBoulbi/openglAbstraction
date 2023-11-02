@@ -11,7 +11,7 @@ namespace sg{
     unsigned int getWidth();
     unsigned int getHeight();
 
-    bool setVSync();
+    bool setVSync(bool status);
     bool isVSync();
 
     private:
