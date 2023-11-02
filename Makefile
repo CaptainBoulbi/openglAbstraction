@@ -1,4 +1,4 @@
-PROJECTNAME=openglAbstraction
+PROJECTNAME=simpleGraphics
 BIN=build/$(PROJECTNAME)
 CC=g++
 
@@ -15,33 +15,46 @@ endif
 DEPFLAGS=-MP -MD
 MACROS=DEBUG=1
 FLAGS=-Wall -Wextra $(foreach F,$(INCDIRS),-I$(F)) $(OPT) $(DEPFLAGS) $(foreach M,$(MACROS),-D$(M))
-LDFLAGS=lib/libglfw3.a $(FLAGS) -Llib -lX11
+LDFLAGS=$(FLAGS) -lglfw3 -lX11 -Llib
 
+APP=$(shell find . -name "*.$(EXT)" -path "./app/*")
+APO=$(subst ./app/,./build/,$(APP:.$(EXT)=.o))
 SRC=$(shell find . -name "*.$(EXT)" -path "./src/*")
 OBJ=$(subst ./src/,./build/,$(SRC:.$(EXT)=.o))
 TEST=$(shell find . -name "*.$(EXT)" -path "./test/*")
 TESTO=$(subst ./test/,./build/,$(TEST:.$(EXT)=.t))
 LIB=glad stb_image_imp
-LIBO=$(foreach L,$(LIB),build/$(L).l)
+LIBO=$(foreach L,$(LIB),build/lib/$(L).l)
+
+LIBIN=build/lib$(PROJECTNAME).a
 
 $(shell mkdir -p build)
 
 
 all : $(BIN)
 
-$(BIN) : $(OBJ) $(LIBO) #build/glad.o build/stb_image_imp.o
+$(BIN) : $(APO) $(LIBIN) #build/glad.o build/stb_image_imp.o
 	$(CC) -o $@ $^ $(LDFLAGS)
 
 -include $(OBJ:.o=.d)
 #$(LIBO:.o=.d)
 
-build/%.l : lib/%.*
+build/lib/%.l : lib/%.*
 	@mkdir -p $(@D)
 	$(CC) $(FLAGS) -o $@ -c $<
 
 build/%.o : src/%.$(EXT)
 	@mkdir -p $(@D)
 	$(CC) $(FLAGS) -o $@ -c $<
+
+build/%.o : app/%.$(EXT)
+	@mkdir -p $(@D)
+	$(CC) $(FLAGS) -o $@ -c $<
+
+lib : $(LIBIN)
+
+$(LIBIN) : $(OBJ) $(LIBO)
+	ar rcs $@ $^
 
 # make test file=testGenID.cpp
 test : build/$(file).t
@@ -59,10 +72,22 @@ run : $(BIN)
 	./$< $(input)
 
 clean :
-	rm -rf build/*.o build/*.d build/*.t $(BIN)
+	rm -rf build/*.o build/*.d build/*.t $(BIN) $(LIBIN)
+
+clean-hard :
+	rm -rf build/*
 
 debug : $(BIN)
 	gdb $< $(input)
+
+asm : $(OBJ:.o=.s) $(BIN).s
+
+build/%.s : src/%.$(EXT)
+	@mkdir -p $(@D)
+	$(CC) $(FLAGS) -S $< -o $@
+
+$(BIN).s : $(BIN)
+	objdump -drwC -Mintel -S $< > $<.s
 
 # unzip : tar -xvf exemple.tgz
 dist : clean
@@ -70,8 +95,8 @@ dist : clean
 	cd .. && tar zcvf $(PROJECTNAME)/build/$(PROJECTNAME).tgz $(PROJECTNAME) >/dev/null
 
 push :
-	git push bbsrv
-	git push gh
+	git push bbsrv master
+	git push gh master
 
 install :
 	mv build/$(PROJECTNAME).tgz $$HOME/dev/opt/archive
@@ -81,7 +106,7 @@ info :
 	@echo you want
 	
 check :
-	cppcheck --enable=all --suppress=missingInclude missingIncludeSystem -Iinclude src
+	cppcheck --enable=all --suppress=missingInclude missingIncludeSystem -Iinclude -Ilib/sg src lib/sg
 	flawfinder src
 
 # alias
@@ -96,4 +121,4 @@ p : push
 
 d : debug
 
-.PHONY : all test t alltest run r clean c debug d dist push p install info check
+.PHONY : all test t alltest run r clean c debug asm d dist push p install info check
