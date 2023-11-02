@@ -20,7 +20,7 @@ int main(){
   defaultShader.setInt("texture1", 0);
 
   sg::Sprite player;
-  player.bind(mac);
+  player.bind(&mac);
   player.bind(&defaultShader);
 
   std::cout << std::endl;

@@ -76,7 +76,7 @@ namespace sg{
     unsigned int textID;
     Shader* shader;
     
-    void bind(Texture text);
+    void bind(Texture* text);
     void bind(Shader* shad);
     void draw();
   };

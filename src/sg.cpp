@@ -119,8 +119,8 @@ sg::Texture::~Texture(){
 // SPRITE
 
 
-void sg::Sprite::bind(sg::Texture text){
-  textID = text.ID;
+void sg::Sprite::bind(sg::Texture* text){
+  textID = text->ID;
 }
 
 void sg::Sprite::bind(sg::Shader* shad){

@@ -2,4 +2,4 @@
 #define SG_LOG_HPP
 
 
-#endif // !SH_LOG_HPP
+#endif // !SG_LOG_HPP
