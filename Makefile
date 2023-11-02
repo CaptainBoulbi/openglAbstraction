@@ -34,7 +34,7 @@ $(shell mkdir -p build)
 all : $(BIN)
 
 $(BIN) : $(APO) $(LIBIN) #build/glad.o build/stb_image_imp.o
-	$(CC) -o $@ $^ $(LDFLAGS)
+	$(CC) -o $@ $^ $(LIBO) $(LDFLAGS)
 
 -include $(OBJ:.o=.d)
 #$(LIBO:.o=.d)
