@@ -5,23 +5,9 @@
 int main(){
 
   sg::setup();
-  sg::setVsync(false);
 
   sg::Window w(1920/2, 1080/2, "man window");
-
-  sg::Texture mac("data/macaque.jpg", true);
-  if (!mac.success)
-    std::cout << mac.log << std::endl;
-
-  sg::Shader defaultShader("shader/texture.glsl");
-  if (!defaultShader.success)
-    std::cout << defaultShader.log << std::endl;
-
-  defaultShader.setInt("texture1", 0);
-
-  sg::Sprite player;
-  player.bind(&mac);
-  player.bind(&defaultShader);
+  sg::setVsync(false);
 
   std::cout << std::endl;
 
@@ -35,8 +21,6 @@ int main(){
       w.setFullscreen(!w.isFullscreen);
 
     std::cout << "\033[1A" << w.nbFrame / w.currentTime  << std::endl;
-
-    player.draw();
 
     w.display();
   }
