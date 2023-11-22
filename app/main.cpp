@@ -2,6 +2,12 @@
 
 #include <iostream>
 
+//TODO
+//renderer
+//shader
+//audio
+//camera
+
 int main(){
 
   sg::setup();
